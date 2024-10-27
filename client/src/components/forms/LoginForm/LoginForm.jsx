@@ -3,22 +3,46 @@ import React from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "@/components/ui/Button/Button";
-import Input from "@/components/ui/Input/Input";
-import Checkbox from "@/components/ui/Checkbox/Checkbox";
-import loginSchema from "@/schemas/loginSchema";
+import Button from "@/components/shadcn/Button/Button";
+import Input from "@/components/shadcn/Input/Input";
+import Checkbox from "@/components/shadcn/Checkbox/Checkbox";
+import baseLoginSchema from "@/schemas/baseLoginSchema";
+import { z } from "zod";
+import { useUserLogin } from "@/hooks/useAuthQueries";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+
+const userLoginSchema = baseLoginSchema.extend({
+  terms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms",
+  }),
+});
 
 const LoginForm = () => {
+  const router = useRouter();
+  const { mutate: loginUser, isLoading } = useUserLogin(); 
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(userLoginSchema),
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    loginUser(data, {
+      onSuccess: () => {
+        toast.success("Login successful! Redirecting...");
+        router.push("/"); 
+      },
+      onError: (error) => {
+        toast.error(error.response?.data?.message || "Login failed");
+        if (error.response.status == 404) {
+          router.push("/user/signup");
+        }
+      },
+    });
   };
 
   return (
@@ -66,8 +90,8 @@ const LoginForm = () => {
 
       {/* Login Button */}
       <div className="flex justify-center items-center">
-        <Button type="submit" className="lg:w-32">
-          Log In
+        <Button type="submit" className="lg:w-32" disabled={isLoading}>
+          {isLoading ? "Logging In..." : "Log In"}
         </Button>
       </div>
 
@@ -75,7 +99,7 @@ const LoginForm = () => {
         <p className="text-gray-400">or</p>
         <p className="text-gray-400">
           Don't have an account yet?{" "}
-          <Link href="/signup" className="text-yellow-400 hover:underline">
+          <Link href="/user/signup" className="text-yellow-400 hover:underline">
             Register Here
           </Link>
         </p>

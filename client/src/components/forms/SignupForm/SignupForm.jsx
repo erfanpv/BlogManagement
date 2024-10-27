@@ -1,14 +1,34 @@
-"use client";
+"use client"; 
+
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "@/components/ui/Button/Button";
-import Input from "@/components/ui/Input/Input";
-import Checkbox from "@/components/ui/Checkbox/Checkbox";
+import Button from "@/components/shadcn/Button/Button";
+import Input from "@/components/shadcn/Input/Input";
+import Checkbox from "@/components/shadcn/Checkbox/Checkbox";
 import signupSchema from "@/schemas/signupSchema";
 import Link from "next/link";
+import { useSignup } from "@/hooks/useAuthQueries";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const SignupForm = () => {
+  const router = useRouter();
+
+  const { mutate: signup, isLoading } = useSignup(
+    (data) => {
+      toast.success("Signup successful! You can now log in.");
+      router.push("/user/logIn");
+    },
+    (error) => {
+      toast.error(error.response?.data?.message || "An error occurred");
+
+      if (error.response.status == 409) {
+        router.push("/user/logIn");
+      }
+    }
+  );
+
   const {
     register,
     handleSubmit,
@@ -17,8 +37,8 @@ const SignupForm = () => {
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    await signup(data);
   };
 
   return (
@@ -88,15 +108,15 @@ const SignupForm = () => {
 
       {/* Sign Up Button */}
       <div className="flex justify-center items-center">
-        <Button type="submit" className="lg:w-32">
-          Sign Up
+        <Button type="submit" className="lg:w-32" disabled={isLoading}>
+          {isLoading ? "Signing Up..." : "Sign Up"}
         </Button>
       </div>
 
       <div className="text-center text-gray-400">
         <p>
           Already have an account?{" "}
-          <Link href="/logIn" className="text-yellow-400 hover:underline">
+          <Link href="/user/logIn" className="text-yellow-400 hover:underline">
             Login
           </Link>
         </p>

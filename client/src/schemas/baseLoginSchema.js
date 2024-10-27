@@ -1,11 +1,8 @@
 import { z } from "zod";
 
-const loginSchema = z.object({
+const baseLoginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
-  terms: z.boolean().refine((val) => val === true, {
-    message: "You must accept the terms",
-  }),
 });
 
-export default loginSchema;
+export default baseLoginSchema;
