@@ -63,7 +63,7 @@ const AdminLogin = () => {
       </div>
 
       {/* Sign In Button */}
-      <Button type="submit">Sign in</Button>
+      <Button type="submit" className={"w-full"}>Sign in</Button>
 
       <p className="text-center text-gray-400 text-sm">
         Don't have an account?{" "}
