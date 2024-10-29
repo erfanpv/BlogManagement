@@ -1,172 +1,126 @@
-import React from "react";
-import { Filter, ChevronDown, MoreVertical } from "lucide-react";
+"use client";
+import React, { useState } from "react";
 import AdminNavBar from "@/components/ui/AdminNavbar/AdminNavbar";
+import Modal from "@/components/ui/Modal/Modal";
+import { useUsers } from "@/hooks/useUsers";
+import { useToggleBlockUser } from "@/hooks/useUsers";
 
 const UserGridLayout = () => {
-  const users = [
-    {
-      name: "Robert Whitstable",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    {
-      name: "Francois Boateng",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    {
-      name: "Elliot Bradbury",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    {
-      name: "Carlos Heroa",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    // Repeated for multiple rows
-    {
-      name: "Robert Whitstable",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    {
-      name: "Francois Boateng",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    {
-      name: "Elliot Bradbury",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    {
-      name: "Carlos Heroa",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    // Third row
-    {
-      name: "Robert Whitstable",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    {
-      name: "Francois Boateng",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    {
-      name: "Elliot Bradbury",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-    {
-      name: "Carlos Heroa",
-      role: "Product manager",
-      image: "/api/placeholder/100/100",
-      likes: 24,
-      comments: 132,
-      shares: 31,
-    },
-  ];
+  const { data: users = [], isLoading, isError, error } = useUsers(1, 10);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { mutate: toggleUserStatus, isLoading: isToggling } =
+    useToggleBlockUser();
+
+  const handleUserAction = (user) => {
+    setSelectedUser(user);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedUser(null);
+    setIsModalOpen(false);
+  };
+
+  const handleToggleStatus = () => {
+    if (selectedUser) {
+      toggleUserStatus(selectedUser._id, {
+        onSuccess: () => closeModal(),
+      });
+    }
+  };
 
   return (
     <div>
       <AdminNavBar />
       <div className="min-h-screen bg-[#121212] p-6">
-        {/* Header */}
-        <div className="flex justify-end mb-6 space-x-4">
-          <button className="flex items-center space-x-2 text-gray-400 hover:text-gray-300 text-sm">
-            <Filter className="w-4 h-4" />
-            <span>Filter users</span>
-            <ChevronDown className="w-4 h-4" />
-          </button>
-          <button className="flex items-center space-x-2 text-gray-400 hover:text-gray-300 text-sm">
-            <span>Sort by date</span>
-            <ChevronDown className="w-4 h-4" />
-          </button>
-          <button className="text-gray-400 hover:text-gray-300">
-            <MoreVertical className="w-4 h-4" />
-          </button>
-        </div>
+        {isLoading ? (
+          <p className="text-gray-400">Loading users...</p>
+        ) : isError ? (
+          <p className="text-red-500">Error: {error.message}</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {users.map((user, index) => (
+              <div
+                key={index}
+                className="bg-[#1a1a1a] rounded-lg p-6 hover:bg-zinc-800/50 transition-colors relative"
+              >
+                <div className="flex justify-center mb-4">
+                  <div className="w-20 h-20 rounded-full bg-gray-500 flex items-center justify-center">
+                    {user.image ? (
+                      <img
+                        src={user.image}
+                        alt={user.name}
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <span className="text-white text-2xl">
+                        {user.fullName.charAt(0)}
+                      </span>
+                    )}
+                  </div>
+                </div>
 
-        {/* Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {users.map((user, index) => (
-            <div
-              key={index}
-              className="bg-[#1a1a1a] rounded-lg p-6 hover:bg-zinc-800/50 transition-colors"
-            >
-              {/* Profile Image */}
-              <div className="flex justify-center mb-4">
-                <div className="w-20 h-20 rounded-full overflow-hidden">
-                  <img
-                    src={user.image}
-                    alt={user.name}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="text-center mb-4">
+                  <h3 className="text-gray-200 font-medium">{user.fullName}</h3>
+                  <p className="text-gray-400 text-sm">{user.designation}</p>
                 </div>
-              </div>
 
-              {/* User Info */}
-              <div className="text-center mb-4">
-                <h3 className="text-gray-200 font-medium">{user.name}</h3>
-                <p className="text-gray-400 text-sm">{user.role}</p>
-              </div>
+                <div className="flex justify-center space-x-4 text-sm">
+                  <div className="text-center">
+                    <p className="text-gray-200">{user.likes || 100}</p>
+                    <p className="text-gray-400">Likes</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-gray-200">{user.comments || 25}</p>
+                    <p className="text-gray-400">Comments</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-gray-200">{user.shares || 300}</p>
+                    <p className="text-gray-400">Shares</p>
+                  </div>
+                </div>
 
-              {/* Metrics */}
-              <div className="flex justify-center space-x-4 text-sm">
-                <div className="text-center">
-                  <p className="text-gray-200">{user.likes}</p>
-                  <p className="text-gray-400">Like</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-gray-200">{user.comments}</p>
-                  <p className="text-gray-400">Comment</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-gray-200">{user.shares}</p>
-                  <p className="text-gray-400">Share</p>
-                </div>
+                <button
+                  onClick={() => handleUserAction(user)}
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded px-2 py-1 text-sm"
+                >
+                  {user.is_blocked ? "Unblock" : "Block"}
+                </button>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title={selectedUser?.is_blocked ? "Unblock User" : "Block User"}
+        content={
+          <p>
+            Are you sure you want to{" "}
+            {selectedUser?.is_blocked ? "unblock" : "block"}{" "}
+            <span className="font-semibold">{selectedUser?.fullName}</span>?
+          </p>
+        }
+        actions={
+          <button
+            onClick={handleToggleStatus}
+            disabled={isToggling}
+            className={`bg-red-500 text-white rounded px-4 py-2 mr-2 ${
+              isToggling ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {isToggling
+              ? "Processing..."
+              : selectedUser?.is_blocked
+              ? "Unblock"
+              : "Block"}
+          </button>
+        }
+      />
     </div>
   );
 };

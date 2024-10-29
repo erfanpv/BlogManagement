@@ -1,6 +1,8 @@
 import Footer from "@/components/ui/Footer/Footer";
 import HeroSection from "@/components/ui/HeroSection/HeroSection";
 import AuthNavbar from "@/components/ui/AuthNavbar/AuthNavbar";
+import HomeContent from "@/components/ui/HomeContent/HomeContent";
+
 
 export default function Home() {
   return (
@@ -48,7 +50,6 @@ export default function Home() {
             {/* Right Section */}
             <section className="md:w-1/3 h-full flex ">
               <div className="bg-customGrayrounded-xl p-8 relative overflow-hidden flex-grow">
-                imafe
                 <div className="flex items-center gap-2 mb-4">
                   <div className="flex -space-x-4">
                     {[1, 2, 3, 4].map((i) => (
@@ -207,6 +208,7 @@ export default function Home() {
             </p>
           </section>
         </div>
+        <HomeContent/>
       </main>
       <HeroSection />
       <Footer />

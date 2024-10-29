@@ -1,17 +1,18 @@
 import React from "react";
+import EditBlog from "@/components/ui/EditBlog/EditBlog";
 import AdminNavBar from "@/components/ui/AdminNavbar/AdminNavbar";
-import CreateBlog from "@/components/ui/CreateBlog/CreateBlog";
 
+const EditBlogPage = ({ params }) => {
+  const { id } = params;
 
-const CreateBlogForm = () => {
   return (
     <div>
       <AdminNavBar />
       <div className="min-h-screen bg-[#1a1a1a] p-8 text-gray-300">
-        <CreateBlog />
+        <EditBlog id={id} />
       </div>
     </div>
   );
 };
 
-export default CreateBlogForm;
+export default EditBlogPage;
