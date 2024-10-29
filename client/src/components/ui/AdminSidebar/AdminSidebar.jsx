@@ -3,8 +3,12 @@ import Link from "next/link";
 import { ChevronUp, Users, Home, LogOut } from "lucide-react";
 import Image from "next/image";
 import futureTechLog from "../../../../public/logos/futureTech.png";
+import { useRouter } from "next/navigation";
+
 
 const Sidebar = ({ isOpen }) => {
+  const router = useRouter();
+
   const [activeSection, setActiveSection] = useState(null);
 
   const [isChecked, setIsChecked] = useState(false);
@@ -13,8 +17,17 @@ const Sidebar = ({ isOpen }) => {
     setIsChecked((prev) => !prev);
   };
 
+  const handlelogoutAdmin = () => {
+    document.cookie =
+      "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    router.push("/admin/logIn");
+  };
+
   const handleSectionClick = (section) => {
-    setActiveSection(section);
+    if (section == "logout") {
+      setActiveSection(section);
+      handlelogoutAdmin();
+    }
   };
 
   const getItemClasses = (section) => {
@@ -48,7 +61,7 @@ const Sidebar = ({ isOpen }) => {
       {/* Menu Items */}
       <div className="flex-1 overflow-y-auto">
         {/* Dashboard Section */}
-        <Link href="/admin/dashboard" passHref>
+        {/* <Link href="/admin/dashboard" passHref>
           <div className="px-4 mt-6 hover:border-l-4 focus:border-l-4 border-l-yellow-600 outline-none transition-all duration-100 ease-in-out">
             <div
               className={getItemClasses("dashboard")}
@@ -58,7 +71,7 @@ const Sidebar = ({ isOpen }) => {
               <span className="font-medium ml-2">Dashboard</span>
             </div>
           </div>
-        </Link>
+        </Link> */}
 
         {/* Blog Section */}
         <div className="relative transition">
@@ -149,8 +162,8 @@ const Sidebar = ({ isOpen }) => {
             A
           </div>
           <div>
-            <div className="text-sm font-medium">Anita Cruz</div>
-            <div className="text-xs text-gray-500">anita@somemail.com</div>
+            <div className="text-sm font-medium">Admin</div>
+            <div className="text-xs text-gray-500">admin@gmail.com</div>
           </div>
         </div>
       </div>
