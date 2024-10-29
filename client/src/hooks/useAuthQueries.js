@@ -57,10 +57,9 @@ export const useUserLogin = () => {
 };
 
 //admin
-
 const loginAdmin = async (credentials) => {
   const response = await axiosInstance.post("/auth/admin/login", credentials);
-  setCookie("user_token", response.data.data.accessToken);
+  setCookie("auth_token", response.data.data.accessToken);
   return response.data;
 };
 
@@ -76,6 +75,7 @@ export const useAdminLogin = () => {
       router.push("/admin/create-blog");
     },
     onError: (error) => {
+      console.log(error)
       toast.error("You are not admin");
     },
   });
