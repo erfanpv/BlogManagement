@@ -1,11 +1,25 @@
-import Cookies from "js-cookie";
-import htpp  from "./axiosIntance";
+import { getCookie } from "cookies-next";
+import axios from "axios";
+import dotenv from "dotenv";
 
-htpp.interceptors.request.use(
+dotenv.config();
+
+const baseUrl = "http://localhost:4000/api";
+
+const http = axios.create({
+  baseURL: baseUrl,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+
+http.interceptors.request.use(
   (config) => {
-    const token = Cookies.get("token");
+    const token = getCookie("auth_token") ||getCookie("user_token")
+    
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers["authorization"] = `${token }`;
     }
     return config;
   },
@@ -14,13 +28,13 @@ htpp.interceptors.request.use(
   }
 );
 
-htpp.interceptors.response.use(
+http.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response ? error.response.status : null;
     if (status === 401) {
-      Cookies.remove("token");
-      window.location.href = "/auth/login";
+      document.cookie =
+        "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     } else if (status === 403) {
       console.error(
         "Access forbidden: You don’t have the necessary permissions"
@@ -32,4 +46,4 @@ htpp.interceptors.response.use(
   }
 );
 
-export default htpp;
+export default http;
