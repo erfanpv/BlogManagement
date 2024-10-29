@@ -5,10 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@/components/shadcn/Button/Button";
 import Input from "@/components/shadcn/Input/Input";
 import baseLoginSchema from "@/schemas/baseLoginSchema";
+import { useAdminLogin } from "@/hooks/useAuthQueries";
 
 const adminLoginSchema = baseLoginSchema;
 
 const AdminLogin = () => {
+  const { mutate: loginAdmin, isLoading } = useAdminLogin();
+
   const {
     register,
     handleSubmit,
@@ -18,7 +21,7 @@ const AdminLogin = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("Form Data:", data);
+    loginAdmin(data);
   };
 
   return (
@@ -63,7 +66,11 @@ const AdminLogin = () => {
       </div>
 
       {/* Sign In Button */}
-      <Button type="submit" className={"w-full"}>Sign in</Button>
+      <div className="flex justify-center items-center">
+        <Button type="submit" className="w-32" disabled={isLoading}>
+          {isLoading ? "Sign in..." : "Sign in"}
+        </Button>
+      </div>
 
       <p className="text-center text-gray-400 text-sm">
         Don't have an account?{" "}

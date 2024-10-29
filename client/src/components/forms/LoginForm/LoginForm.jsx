@@ -9,8 +9,6 @@ import Checkbox from "@/components/shadcn/Checkbox/Checkbox";
 import baseLoginSchema from "@/schemas/baseLoginSchema";
 import { z } from "zod";
 import { useUserLogin } from "@/hooks/useAuthQueries";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
 const userLoginSchema = baseLoginSchema.extend({
   terms: z.boolean().refine((val) => val === true, {
@@ -19,8 +17,7 @@ const userLoginSchema = baseLoginSchema.extend({
 });
 
 const LoginForm = () => {
-  const router = useRouter();
-  const { mutate: loginUser, isLoading } = useUserLogin(); 
+  const { mutate: loginUser, isLoading } = useUserLogin();
 
   const {
     register,
@@ -31,18 +28,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = (data) => {
-    loginUser(data, {
-      onSuccess: () => {
-        toast.success("Login successful! Redirecting...");
-        router.push("/"); 
-      },
-      onError: (error) => {
-        toast.error(error.response?.data?.message || "Login failed");
-        if (error.response.status == 404) {
-          router.push("/user/signup");
-        }
-      },
-    });
+    loginUser(data);
   };
 
   return (
@@ -90,7 +76,7 @@ const LoginForm = () => {
 
       {/* Login Button */}
       <div className="flex justify-center items-center">
-        <Button type="submit" className="lg:w-32" disabled={isLoading}>
+        <Button type="submit" className="w-32" disabled={isLoading}>
           {isLoading ? "Logging In..." : "Log In"}
         </Button>
       </div>

@@ -108,7 +108,7 @@ const SignupForm = () => {
 
       {/* Sign Up Button */}
       <div className="flex justify-center items-center">
-        <Button type="submit" className="lg:w-32" disabled={isLoading}>
+        <Button type="submit" className="w-32" disabled={isLoading}>
           {isLoading ? "Signing Up..." : "Sign Up"}
         </Button>
       </div>
