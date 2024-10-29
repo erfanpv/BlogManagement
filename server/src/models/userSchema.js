@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true, 
+      unique: true,
       lowercase: true,
       trim: true,
     },
@@ -38,5 +38,5 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const userDb = mongoose.model("users", userSchema);
-export default userDb;  
+const userDb = mongoose.model("Users", userSchema);
+export default userDb;
