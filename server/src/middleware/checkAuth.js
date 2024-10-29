@@ -1,14 +1,20 @@
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config()
 
 const checkAuth = (req, res, next) => {
   try {
-    const token = req.headers.authorization;        
+    console.log("erfan")
+    const token = req.headers.authorization;
 
     if (!token) {
       return res.status(401).json({success:false,message: "Access denied" });
     }
 
     const tokenValid = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+
 
     if (!tokenValid) {
       return res.status(500).json({success:false, message: "Token not valid" });

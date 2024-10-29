@@ -48,50 +48,49 @@ export const userSignUp = async (req, res) => {
 };
 
 
-export const login = async (req,res) => {
+export const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
-  }
+      return res.status(400).json({ success: false, message: 'Email and password are required' });
+    }
 
-  const  user= await userDb.findOne({ email });
+    const user = await userDb.findOne({ email });
 
-
-  if (!user) {
-    return res.status(404).json({ success: false, message: "Invalid User. Create an account" });
-  }
+    if (!user) {
+      return res.status(404).json({ success: false, message: "Invalid User. Create an account" });
+    }
     
-  // Compare provided password with stored hashed password
-  const validpassword  = await comparePassword(password, user.password);
-  
-  if (!validpassword ) {
-    return res.status(401).json({ success: false, message: "Invalid email or Password" });
-  }
+    // Compare provided password with stored hashed password
+    const validPassword = await comparePassword(password, user.password);
+    
+    if (!validPassword) {
+      return res.status(401).json({ success: false, message: "Invalid email or Password" });
+    }
 
-  // Check if the user's account is blocked
-  if (user.is_blocked == true) {
-    return res.status(400).json({ message: "Your account is suspended" });
-  };
+    // Check if the user's account is blocked
+    if (user.is_blocked) {
+      return res.status(403).json({ success: false, message: "Your account is suspended" });
+    }
 
-  // Generate access and refresh tokens
-  const accessToken = generateToken(user._id);
-  const refreshToken =  generateRefreshToken(user._id);
+    // Generate access and refresh tokens
+    const accessToken = generateToken(user._id);
+    const refreshToken = generateRefreshToken(user._id);
 
-  // Set refresh token in an HTTP-only cookie for security
-  res.cookie('refreshToken', refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'Strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000
-  });
+    // Set refresh token in an HTTP-only cookie for security
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
 
-  return res.status(200).json({ success: true, message: "User Logged Success", data: { user, accessToken,refreshToken} });
+    return res.status(200).json({ success: true, message: "User Login Success", data: { user, accessToken, refreshToken } });
 
   } catch (error) {
     // Handle unexpected errors
-    res.status(500).json({ success: false, message: `Bad request: ${error.message}` });
+    return res.status(500).json({ success: false, message: `Bad request: ${error.message}` });
   }
 }
 
@@ -114,3 +113,49 @@ export const refreshToken = async (req, res) => {
   return res.status(500).json({ success: false, message:`unexpcted error ${error.message}` });
  }
 };
+
+
+export const adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate input
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Email and password are required' });
+    }
+
+    // Find user by email
+    const admin = await userDb.findOne({ email });
+
+    // Check if admin exists and verify the role
+    if (!admin || admin.role !== 'admin') {
+      return res.status(404).json({ success: false, message: "Invalid User. Create an account or ensure you have admin access" });
+    }
+    
+    // Compare provided password with stored hashed password
+    const validPassword = await comparePassword(password, admin.password);
+    
+    if (!validPassword) {
+      return res.status(401).json({ success: false, message: "Invalid email or Password" });
+    }
+
+    // Generate access and refresh tokens
+    const accessToken = generateToken(admin._id);
+    const refreshToken = generateRefreshToken(admin._id);
+
+    // Set refresh token in an HTTP-only cookie for security
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    return res.status(200).json({ success: true, message: "Admin Login Success", data: { admin, accessToken, refreshToken } });
+
+  } catch (error) {
+    // Handle unexpected errors
+    return res.status(500).json({ success: false, message: `Bad request: ${error.message}` });
+  }
+}
+
