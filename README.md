@@ -1,98 +1,53 @@
 # Blog Management Application
 
-# Project Overview
-# This is a full-stack blog management application with a Next.js and Tailwind CSS client, and an Express and MongoDB server.
-# The application allows users to manage blogs with JWT-based authentication and includes a responsive UI following Figma specifications.
+This is a full-stack blog management application with a **Next.js** and **Tailwind CSS** client, and an **Express** and **MongoDB** server. The application allows users to manage their blogs with secure JWT-based authentication and includes a responsive UI following Figma specifications.
 
-# Technologies Used
+## Table of Contents
 
-## Client
-# - Next.js for server-side rendering
-# - Tailwind CSS for styling
-# - React Query for API data handling and caching
-# - Zustand for state management
-# - React Hook Form with Zod for form validation
+- Project Overview
+- Technologies Used
+- Setup and Installation
+  - Client
+  - Server
+- Running the Application Locally
+- Application Architecture
+- Deployment
+- Live Demo
 
-## Server
-# - Express for building API routes
-# - Mongoose for MongoDB
-# - JWT for authentication
+## Project Overview
 
-# Setup and Installation
+Over the past week, I focused on building and integrating Next.js, React Query, and Zustand to meet the project's requirements. Key features include:
 
-## Prerequisites
-# - Node.js and npm installed
-# - MongoDB database setup (local or cloud)
+- **Frontend Framework**: Next.js, for server-side rendering and enhanced performance.
+- **State Management**: Zustand, for efficient global state management.
+- **Data Fetching and Caching**: React Query, for API handling, caching, and data synchronization.
+- **Form Handling and Validation**: React Hook Form and Zod, for schema-based form validation.
+- **JWT Authentication**: Secure JWT-based authentication with HTTP-only cookies.
+- **Admin Panel Design**: UI aligned with Figma specifications using Shadcn components.
 
-# Client Setup
+## Technologies Used
 
-# Navigate to the client folder:
-cd client
+### Client
+- **Next.js** for server-side rendering
+- **Tailwind CSS** for styling
+- **React Query** for API data handling
+- **Zustand** for state management
+- **React Hook Form** with **Zod** for form validation
 
-# Install dependencies:
-npm install
+### Server
+- **Express** for building API routes
+- **Mongoose** for MongoDB
+- **JWT** for authentication
 
-# Set up environment variables in a .env.local file:
-echo "NEXT_PUBLIC_API_BASE_URL=http://localhost:4000/api" > .env.local
+## Setup and Installation
 
-## Server Setup
+### Prerequisites
 
-# Navigate to the server folder:
-cd ../server
+- **Node.js** and **npm** installed
+- MongoDB database setup (local or cloud)
 
-# Install dependencies:
-npm install
+### Client
 
-# Set up environment variables in a .env file:
-echo "MONGODB_URI=<your-mongodb-uri>" > .env
-echo "JWT_SECRET=<your-jwt-secret>" >> .env
-echo "PORT=4000" >> .env
-
-# Running the Application Locally
-
-## Start the Server
-
-# In the server directory, run:
-npm run dev
-
-# The server will start on http://localhost:4000.
-
-## Start the Client
-
-# In the client directory, run:
-cd ../client
-npm run dev
-
-# The client will start on http://localhost:3000.
-
-## API Base URL
-
-# Ensure the client-side API base URL is set to http://localhost:4000/api for local development.
-
-# Application Architecture
-
-## Client Side (Next.js, Zustand, React Query)
-# - Pages: Dynamic and static routes for blog posts and authentication.
-# - State Management: Zustand manages global state like authentication status.
-# - Data Fetching: React Query handles API requests and data caching.
-# - UI: Tailwind CSS and Shadcn components aligned with Figma designs.
-
-## Server Side (Express, MongoDB)
-# - Routes: Express handles CRUD operations and authentication.
-# - Authentication: JWT-based, with tokens stored in HTTP-only cookies.
-# - Database: MongoDB managed with Mongoose for schema definitions.
-
-# Deployment
-
-# The application is deployed as follows:
-
-# Frontend: Deployed on Vercel for continuous deployment and scalability.
-# Backend: Deployed on Render for managed Node.js hosting.
-
-# Live Demo
-
-# Access the live application here: https://blog-management-six.vercel.app/
-
-# API Base URL:
-# - Local: http://localhost:4000/api
-# - Production: https://blogmanagement-ce2e.onrender.com/api
+1. Navigate to the `client` folder:
+   ```bash
+   cd client
