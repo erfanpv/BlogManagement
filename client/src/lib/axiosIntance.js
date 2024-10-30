@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const baseUrl = "http://localhost:4000/api";
+const baseUrlLocal = "http://localhost:4000/api";
+const baseUrl = "https://blogmanagement-ce2e.onrender.com";
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
