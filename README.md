@@ -98,15 +98,15 @@ Set the client-side API base URL to http://localhost:4000/api for local developm
 
 ## Application Architecture
 The application is split into client and server folders:
-  Client Side (Next.js, Zustand, React Query)
-    Pages: Dynamic and static routes for blog posts and authentication.
-    State Management: Zustand manages global state like authentication status.
-    Data Fetching: React Query handles API requests and data caching.
-    UI: Tailwind CSS and Shadcn components aligned with Figma designs.
-  Server Side (Express, MongoDB)
-    Routes: Express handles CRUD operations and authentication.
-    Authentication: JWT-based, with tokens stored in HTTP-only cookies.
-    Database: MongoDB managed with Mongoose for schema definitions.
+  ### Client Side (Next.js, Zustand, React Query)
+    - **Pages: Dynamic and static routes for blog posts and authentication.**
+    - **State Management: Zustand manages global state like authentication status.**
+    - ** Data Fetching: React Query handles API requests and data caching.**
+     - **UI: Tailwind CSS and Shadcn components aligned with Figma designs.**
+  ### Server Side (Express, MongoDB)
+    - **Routes: Express handles CRUD operations and authentication.**
+    - **Authentication: JWT-based, with tokens stored in HTTP-only cookies.**
+    - **Database: MongoDB managed with Mongoose for schema definitions.**
 ## Deployment
 The application is deployed as follows:
   Frontend: Vercel for continuous deployment and scalability.
