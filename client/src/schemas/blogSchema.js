@@ -10,7 +10,7 @@ const blogSchema = z.object({
   date: z.string().min(1, "Publishing date is required"),
   category: z.string().min(1, "Category is required"),
   author: z.string().min(1, "Author name is required"),
-  paragraphs: z.array(paragraphSchema).min(1, "At least one paragraph is required"), // At least one paragraph
+  paragraphs: z.array(paragraphSchema).min(1, "At least one paragraph is required"), 
 });
 
 export default blogSchema;
