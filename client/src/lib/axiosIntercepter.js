@@ -4,9 +4,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const baseUrlLocal = "https://blogmanagement-ce2e.onrender.com/api";
-const baseUrl = "http://localhost:4000/api";
-
+const baseUrlLocal = "http://localhost:4000/api";
+const baseUrl = "https://blogmanagement-ce2e.onrender.com/api";
 
 const http = axios.create({
   baseURL: baseUrl,
@@ -15,13 +14,12 @@ const http = axios.create({
   },
 });
 
-
 http.interceptors.request.use(
   (config) => {
-    const token = getCookie("auth_token") ||getCookie("user_token")
-    
+    const token = getCookie("auth_token") || getCookie("user_token");
+
     if (token) {
-      config.headers["authorization"] = `${token }`;
+      config.headers["authorization"] = `${token}`;
     }
     return config;
   },

@@ -3,9 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const baseUrlLocal = "https://blogmanagement-ce2e.onrender.com/api";
-const baseUrl = "http://localhost:4000/api";
-
+const baseUrlLocal = "http://localhost:4000/api";
+const baseUrl = "https://blogmanagement-ce2e.onrender.com/api";
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -14,4 +13,4 @@ const axiosInstance = axios.create({
   },
 });
 
-export default axiosInstance
+export default axiosInstance;
