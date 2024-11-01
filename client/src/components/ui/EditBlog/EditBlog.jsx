@@ -3,9 +3,9 @@ import React from "react";
 import BlogForm from "@/components/forms/BlogForm/BlogForm";
 import { useEditBlog, useGetBlogById } from "@/hooks/useBlog";
 
-const EditBlog = ({ id }) => {
+const EditBlog = ({ id,isNavigate }) => {
   const { data: blogData, isLoading: isFetching, error: fetchError } = useGetBlogById(id);
-  const { mutate, isLoading: isMutating, error: editError } = useEditBlog();
+  const { mutate, isLoading: isMutating, error: editError } = useEditBlog(isNavigate);
 
   const handleEditBlog = (updatedData) => {
     mutate({ id, updatedData }); 
@@ -17,7 +17,7 @@ const EditBlog = ({ id }) => {
   return (
     <>
       {isMutating && <p>Saving changes...</p>}
-      <BlogForm onSubmit={handleEditBlog} initialData={blogData?.data} isEdit={true} />
+      <BlogForm onSubmit={handleEditBlog} initialData={blogData?.data} isEdit={true}/>
       {editError && <p className="text-red-500">Error editing blog: {editError.message}</p>}
     </>
   );

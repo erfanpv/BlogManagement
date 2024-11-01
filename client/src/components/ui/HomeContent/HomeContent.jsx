@@ -1,30 +1,25 @@
 "use client";
 import React from "react";
-import useFetchBlogs from "@/hooks/useFetchBlogs";
 import Image from "next/image";
 import arrowIcon from "../../../../public/Icons/arrowIcons.png";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
-
-
+import { useFetchAllBlogs } from "@/hooks/useBlog";
 
 const HomeContent = () => {
-  const { data: blogs, isLoading, isError } = useFetchBlogs();
+  const { data: blogs, isLoading, isError } = useFetchAllBlogs()
 
   const token = getCookie("user_token");
-
 
   const router = useRouter();
 
   const handleBlogView = (id) => {
     if (token) {
       router.push(`blog/${id}`);
-    }else {
+    } else {
       router.push(`user/logIn`);
     }
   };
-
-
 
   return (
     <div className="p-6 bg-customGray">

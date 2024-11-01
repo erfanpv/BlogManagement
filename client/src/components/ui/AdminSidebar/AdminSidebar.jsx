@@ -18,6 +18,7 @@ const Sidebar = ({ isOpen }) => {
   };
 
   const handlelogoutAdmin = () => {
+    localStorage.removeItem("userId")
     document.cookie =
       "auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     router.push("/admin/logIn");
