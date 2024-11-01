@@ -1,15 +1,5 @@
-import blogDb from "../../models/blogSchema.js";
 import userDb from "../../models/userSchema.js"
 
-// Get the all Blogs
-export const getAllBlogs = async (req, res,) => {
-  try {
-    const blogs = await blogDb.find();
-    return res.status(200).json({success:true, message: "Data fetched", data: blogs });
-  } catch (error) {
-    return res.status(400).json({success:false, message: `iUnexpected error ${error.message}`});
-  }
-};
 
 // Get the all Users
 export const getAllUsers = async (req, res) => {
