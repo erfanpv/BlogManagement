@@ -84,7 +84,7 @@ const LoginForm = () => {
       <div className="text-center space-y-2">
         <p className="text-gray-400">or</p>
         <p className="text-gray-400">
-          Don't have an account yet?{" "}
+          Don't have an account yet?
           <Link href="/user/signup" className="text-yellow-400 hover:underline">
             Register Here
           </Link>
