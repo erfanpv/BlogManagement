@@ -34,11 +34,15 @@ const BlogListingTableUser = () => {
   };
 
   if (isLoading) {
-    return <div className="bg-black text-white p-20 text-center">Loading...</div>;
+    return (
+      <div className="bg-black text-white p-20 text-center">Loading...</div>
+    );
   }
 
   if (isError) {
-    return <div className="text-center text-red-500">Error fetching blogs.</div>;
+    return (
+      <div className="text-center text-red-500">Error fetching blogs.</div>
+    );
   }
 
   const columns = [
@@ -72,8 +76,12 @@ const BlogListingTableUser = () => {
 
         {blogs.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[70vh] text-center">
-            <h2 className="text-2xl font-semibold mb-4">You don’t have any blogs yet.</h2>
-            <p className="text-gray-400 mb-6">Start sharing your insights with others!</p>
+            <h2 className="text-2xl font-semibold mb-4">
+              You don’t have any blogs yet.
+            </h2>
+            <p className="text-gray-400 mb-6">
+              Start sharing your insights with others!
+            </p>
           </div>
         ) : (
           <TableWithActions
@@ -91,12 +99,6 @@ const BlogListingTableUser = () => {
         content={`Are you sure you want to delete the blog titled "${selectedBlog?.title}"?`}
         actions={
           <div className="flex justify-end space-x-4">
-            <button
-              onClick={closeDeleteModal}
-              className="bg-gray-500 text-white rounded px-4 py-2 hover:bg-gray-600"
-            >
-              Cancel
-            </button>
             <button
               onClick={handleDeleteBlog}
               className="bg-red-500 text-white rounded px-4 py-2 hover:bg-red-600"
