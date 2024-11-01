@@ -5,7 +5,6 @@ export function middleware(req) {
 
   const token = getCookie("auth_token", { req });
 
-  console.log(token)
 
   // Allow access to the login page
   if (req.nextUrl.pathname === "/admin/logIn") {
@@ -17,13 +16,13 @@ export function middleware(req) {
     return NextResponse.redirect(new URL("/admin/logIn", req.url));
   }
 
-  console.log("erfan")
 
   return NextResponse.next();
 }
 
+// Apply middleware to all admin routes
 // export const config = {
-//   matcher: ["/admin/:path*"], // Apply middleware to all admin routes
+//   matcher: ["/admin/:path*"], 
 // };
 
 
