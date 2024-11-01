@@ -9,7 +9,7 @@ import baseRouter from "./src/routes/baseRoutes.js";
 import adminRouter from "./src/routes/adminRoutes.js";
 
 const app = express();
-dotenv.config();
+dotenv.config();  
 
 connectDb();
 
