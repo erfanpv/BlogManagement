@@ -1,30 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { deleteBlog, editBlog, getBlogById } from "@/api/blogApi/blogApi";
+import { createBlog, deleteBlog, editBlog, getBlogById, fetchAllBlogs, getBlogsByUserId } from "@/api/blogApi/blogApi";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import http from "@/lib/axiosIntercepter";
 
-const useBlog = () => {
+
+export const useCreateBlog = () => {
+
   const mutation = useMutation({
-    mutationFn: async (blogData) => {
-      const response = await http.post("/base/create-blog", blogData);
-      return response.data;
-    },
+    mutationFn: createBlog,
     onSuccess: (data) => {
-      toast.success("Blog created successfully!");
     },
     onError: (error) => {
       const errorMessage =
         error.response?.data?.message || "Failed to create blog";
       toast.error(`Error: ${errorMessage}`);
+      console.log(error)
     },
   });
 
   return mutation;
 };
-
-export default useBlog;
 
 export const useDeleteBlog = () => {
   const queryClient = useQueryClient();
@@ -40,7 +36,7 @@ export const useDeleteBlog = () => {
   });
 };
 
-export const useEditBlog = () => {
+export const useEditBlog = (isNavigate=false) => {
   const router = useRouter();
 
   return useMutation({
@@ -48,7 +44,11 @@ export const useEditBlog = () => {
     onSuccess: (data) => {
       if (data) {
         toast.success("Successfully edited blog");
-        router.push("/admin/blog-list");
+        if (isNavigate) {
+          router.push("/my-blogs");
+        }else {
+          router.push("/admin/blog-list");
+        }
       } else {
         toast.error("No changes were made.");
       }
@@ -67,3 +67,24 @@ export const useGetBlogById = (id) => {
     enabled: !!id,
   });
 };
+
+export const useFetchAllBlogs = () => {
+  return useQuery({
+    queryKey: ["blogs"],
+    queryFn: fetchAllBlogs,
+    onError: (error) => {
+      console.error(`Failed to fetch blogs: ${error.message}`);
+    },
+  });
+};
+
+export const useGetBlogsByUserId  = () => {
+  return useQuery({
+    queryKey: ["userBlogs"],
+    queryFn:getBlogsByUserId,
+    onError: (error) => {
+      console.error(`Failed to fetch blogs: ${error.message}`);
+    },
+  });
+};
+

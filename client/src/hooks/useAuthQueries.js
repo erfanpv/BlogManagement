@@ -1,17 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import useAdminStore from "@/stores/adminStore";
 import useUserStore from "@/stores/userStore";
-import axiosInstance from "@/lib/axiosIntance";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { setCookie } from "cookies-next";
+import { loginAdmin, loginUser, signupUser } from "@/api/authApi/authApi";
 
 //signup
-const signupUser = async (userData) => {
-  const response = await axiosInstance.post("/auth/signup", userData);
-  return response.data;
-};
-
 export const useSignup = (onSuccess, onError) => {
   return useMutation({
     mutationFn: signupUser,
@@ -29,12 +23,6 @@ export const useSignup = (onSuccess, onError) => {
 };
 
 //user
-const loginUser = async (credentials) => {
-  const response = await axiosInstance.post("/auth/login", credentials);
-  setCookie("user_token", response.data.data.accessToken);
-  return response.data;
-};
-
 export const useUserLogin = () => {
   const router = useRouter();
 
@@ -44,6 +32,7 @@ export const useUserLogin = () => {
     mutationFn: loginUser,
     onSuccess: (data) => {
       toast.success("Login successful! Redirecting...");
+      localStorage.setItem("userId", data.data.user._id);
       setUser(data);
       router.push("/");
     },
@@ -57,12 +46,6 @@ export const useUserLogin = () => {
 };
 
 //admin
-const loginAdmin = async (credentials) => {
-  const response = await axiosInstance.post("/auth/admin/login", credentials);
-  setCookie("auth_token", response.data.data.accessToken);
-  return response.data;
-};
-
 export const useAdminLogin = () => {
   const router = useRouter();
   const { setAdmin } = useAdminStore();
@@ -72,10 +55,11 @@ export const useAdminLogin = () => {
     onSuccess: (data) => {
       toast.success("Login successful! Redirecting...");
       setAdmin(data);
+      localStorage.setItem("userId", data.data.admin._id);
       router.push("/admin/create-blog");
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
       toast.error("You are not admin");
     },
   });
