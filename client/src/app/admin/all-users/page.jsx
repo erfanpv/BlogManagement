@@ -1,17 +1,15 @@
 "use client";
 import React, { useState } from "react";
-import AdminNavBar from "@/components/ui/AdminNavbar/AdminNavbar";
+import AdminNavBar from "@/components/ui/Navbars/AdminNavbar/AdminNavbar";
 import Modal from "@/components/ui/Modal/Modal";
-import { useUsers } from "@/hooks/useUsers";
-import { useToggleBlockUser } from "@/hooks/useUsers";
+import { useBlockOrUnblockUser, useFetchAllUsers } from "@/hooks/useUsers";
 
 const UserGridLayout = () => {
-  const { data: users = [], isLoading, isError, error } = useUsers(1, 10);
+  const { data: users = [], isLoading, isError, error } = useFetchAllUsers(1, 10);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { mutate: toggleUserStatus, isLoading: isToggling } =
-    useToggleBlockUser();
+  const { mutate: blockOrUnblockUser, isLoading: isToggling } = useBlockOrUnblockUser()
 
   const handleUserAction = (user) => {
     setSelectedUser(user);
@@ -25,7 +23,7 @@ const UserGridLayout = () => {
 
   const handleToggleStatus = () => {
     if (selectedUser) {
-      toggleUserStatus(selectedUser._id, {
+      blockOrUnblockUser(selectedUser._id, {
         onSuccess: () => closeModal(),
       });
     }

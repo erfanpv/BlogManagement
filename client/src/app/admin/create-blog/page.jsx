@@ -1,5 +1,5 @@
 import React from "react";
-import AdminNavBar from "@/components/ui/AdminNavbar/AdminNavbar";
+import AdminNavBar from "@/components/ui/Navbars/AdminNavbar/AdminNavbar";
 import CreateBlog from "@/components/ui/CreateBlog/CreateBlog";
 
 

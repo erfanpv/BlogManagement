@@ -3,12 +3,13 @@ import Image from "next/image";
 import React from "react";
 import HeroSection from "@/components/ui/HeroSection/HeroSection";
 import Footer from "@/components/ui/Footer/Footer";
-import AuthNavbar from "@/components/ui/AuthNavbar/AuthNavbar";
-import useFetchBlogs from "@/hooks/useFetchBlogs";
 import arrowicon from "../../../../../public/Icons/arrowIcons.png";
 import BlogPageById from "@/components/ui/BlogPage/BlogPage";
 import { useRouter } from "next/navigation";
 import { getCookie } from "cookies-next";
+import Navbar from "@/components/ui/Navbars/Navbar/Navbar";
+import TopBanner from "@/components/ui/TopBanner/TopBanner";
+import { useFetchAllBlogs } from "@/hooks/useBlog";
 
 const BlogPage = ({ params }) => {
   const { id } = params;
@@ -24,12 +25,12 @@ const BlogPage = ({ params }) => {
     }
   };
 
-  const { data: blogs, isLoading, isError } = useFetchBlogs();
+  const { data: blogs, isLoading, isError } = useFetchAllBlogs();
 
   return (
     <div>
-      <AuthNavbar />
-
+      <TopBanner />
+      <Navbar showLinks={true} showContactButton={true} />
       <BlogPageById id={id} />
 
       <div className=" border-t border-gray-700 bg-customGray">

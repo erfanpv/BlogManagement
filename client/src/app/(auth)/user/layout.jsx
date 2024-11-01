@@ -1,13 +1,11 @@
 import React from "react";
-import AuthNavbar from "@/components/ui/AuthNavbar/AuthNavbar";
+import Navbar from "@/components/ui/Navbars/Navbar/Navbar";
 
 const AuthLayout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">
-      <AuthNavbar />
-      <main>
-        {children}
-      </main>
+      <Navbar showLinks={false} showContactButton={false} />
+      <main>{children}</main>
     </div>
   );
 };
